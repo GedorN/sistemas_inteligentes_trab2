@@ -12,11 +12,15 @@ class Graph:
       if (x > curve.begin and x <= curve.end):
         expression = curve.relation
         expression = expression.split('+')
-        expression[0] = expression[0].replace('x', '')
-        y =  float(expression[0]) * x
-        y+= float(expression[1])
-        pertinencesValues.append(y)
-        pertinencesLabels.append(curve.label)
+        if (len(expression) == 1):
+          pertinencesValues.append(float(expression[0]))
+          pertinencesLabels.append(curve.label)
+        else:
+          expression[0] = expression[0].replace('x', '')
+          y =  float(expression[0]) * x
+          y+= float(expression[1])
+          pertinencesValues.append(y)
+          pertinencesLabels.append(curve.label)
       else:
         pertinencesValues.append(0)
         pertinencesLabels.append(curve.label)
