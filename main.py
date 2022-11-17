@@ -70,8 +70,6 @@ for index, row in file.iterrows():
     heartWeight = -0.14
     breathingWeigh = 10.26
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
-
-
   elif (pertinencesValuesBreating[pertinencesLabelsBreating.index("alto")] > 0):
     indexBreating = pertinencesLabelsBreating.index("alto")
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
@@ -111,9 +109,9 @@ for index, row in file.iterrows():
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
     indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
-    preassureWeight = 1
-    heartWeight = 1
-    breathingWeigh = 1
+    preassureWeight = 4.37
+    heartWeight = 1.329
+    breathingWeigh = -6.73
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
   
   print(f"Linha {index} valor: {value}")
