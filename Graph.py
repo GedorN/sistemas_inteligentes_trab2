@@ -20,7 +20,8 @@ class Graph:
           pertinencesValues[pertinencesLabels.index(curve.label)] = (float(expression[0]))
         else:
           expression[0] = expression[0].replace('x', '')
+
           y =  float(expression[0]) * x
           y+= float(expression[1])
-          pertinencesValues[pertinencesLabels.index(curve.label)] = (float(expression[0]))
+          pertinencesValues[pertinencesLabels.index(curve.label)] = y
     return (pertinencesValues, pertinencesLabels)
