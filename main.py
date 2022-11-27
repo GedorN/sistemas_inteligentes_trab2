@@ -15,7 +15,7 @@ GraphPressure = Graph("Qualidade de pressão")
 # Dados do gráfico fuzzy de batimentos cardiacos
 beingHeart = [0, 45, 50, 90, 90]
 endHeart = [50, 50, 90, 95, 200]
-relationsHeart = ["-0.02x+1", "0.2x+-9", "1", "-02x+19", "0.009x+-0.81"]
+relationsHeart = ["-0.02x+1", "0.2x+-9", "1", "-0.2x+19", "0.009x+-0.81"]
 labelHeart = ["baixo", "bom", "bom", "bom", "alto"]
 GraphHeart = Graph("Batimentos Cardíacos")
 
@@ -25,6 +25,13 @@ endBreathing = [12, 14, 16, 20, 40]
 relationsBreathing = ["-0.08x+1", "0.25x+-2.5", "1", "-0.25x+5", "0.05x+-0.82"]
 labelBreating = ["baixo", "bom", "bom", "bom", "alto"]
 GraphBreating = Graph("Frequência Respiração")
+
+#Dados do gráfico fuzzy de gravidade
+beginsGravity = [0, 24, 25, 49, 50, 74, 75, 87]
+endsGravity = [24, 26, 49, 51, 74, 76, 87, 200]
+relationsGravity = ["1", "-0.5x+13", "0.0417x+-1.0433", "-0.5x+25.5", "0.0417x+-2.0858", "-0.5x+38", "0.0833x+-6.2471", "1"]
+labelGravity = ["critico","critico","instavel","instavel","potencialmente_estavel","potencialmente_estavel","estavel","estavel"]
+GraphGravity = Graph("Gravidade")
 
 for i in range(0, len(beginsPressure)):
   curve = GraphCurve(beginsPressure[i], endsPressure[i], relationsPressure[i], labelPressure[i])
@@ -38,7 +45,11 @@ for i in range(0, len(beginBreathing)):
   curve = GraphCurve(beginBreathing[i], endBreathing[i], relationsBreathing[i], labelBreating[i])
   GraphBreating.addCurve(curve)
 
-print(file)
+for i in range(0, len(beginsGravity)):
+  curve = GraphCurve(beginsGravity[i], endsGravity[i], relationsGravity[i], labelGravity[i])
+  GraphGravity.addCurve(curve)
+
+# print(file)
 
 for index, row in file.iterrows():
   preassure = row['qPA']
@@ -57,63 +68,120 @@ for index, row in file.iterrows():
     indexPreassure = pertinencesLabelsPressure.index("alto")
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
     indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
-    preassureWeight = 219.36
-    heartWeight = -14.038
-    breathingWeigh = -56.99
+    preassureWeight = 6.3145
+    heartWeight = -0.3817
+    breathingWeigh = -1.8384
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
 
   elif (pertinencesValuesHeart[pertinencesLabelsheart.index("alto")] > 0):
     indexHeart = pertinencesLabelsheart.index("alto")
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
     indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
-    preassureWeight = 0
-    heartWeight = -0.14
-    breathingWeigh = 10.26
+    preassureWeight = -0.688
+    heartWeight = 0.032
+    breathingWeigh = 1.662
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
   elif (pertinencesValuesBreating[pertinencesLabelsBreating.index("alto")] > 0):
     indexBreating = pertinencesLabelsBreating.index("alto")
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
-    preassureWeight = 2.92
-    heartWeight = 0.289
-    breathingWeigh = -0.87
+    preassureWeight = 0.8437
+    heartWeight = 0.04512
+    breathingWeigh = -0.1248
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
 
   elif (pertinencesValuesPressure[pertinencesLabelsPressure.index("baixo")] > 0):
     indexPreassure = pertinencesLabelsPressure.index("baixo")
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
     indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
-    preassureWeight = -1.189
-    heartWeight = 0.19
-    breathingWeigh = 2.21
+    preassureWeight = 0.1049
+    heartWeight = 0.02628
+    breathingWeigh = 1.2913
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
 
   elif (pertinencesValuesHeart[pertinencesLabelsheart.index("baixo")] > 0):
     indexBreating = pertinencesLabelsheart.index("baixo")
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
-    preassureWeight = 4.102
-    heartWeight = 23.64552
-    breathingWeigh = -101.22
+    preassureWeight = -0.9192
+    heartWeight = -4.55749
+    breathingWeigh = 21.515
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
 
   elif (pertinencesValuesBreating[pertinencesLabelsBreating.index("baixo")] > 0):
     indexBreating = pertinencesLabelsBreating.index("baixo")
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
-    preassureWeight = -0.279
-    heartWeight = 0.332
-    breathingWeigh = 3.648
+    preassureWeight = -0.0537
+    heartWeight = 0.066
+    breathingWeigh = 0.72595
+    value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
+  elif (pertinencesValuesPressure[pertinencesLabelsPressure.index("bom")] > 0 and pertinencesValuesHeart[pertinencesLabelsheart.index("bom")] > 0):
+    indexPreassure = pertinencesLabelsPressure.index("baixo")
+    indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
+    indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
+    preassureWeight = -28.0138
+    heartWeight = -0.72725
+    breathingWeigh = 1.94372
+    value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
+  elif (pertinencesValuesPressure[pertinencesLabelsPressure.index("bom")] > 0 and pertinencesValuesBreating[pertinencesLabelsBreating.index("bom")] > 0):
+    indexPreassure = pertinencesLabelsPressure.index("baixo")
+    indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
+    indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
+    preassureWeight = 24.1209
+    heartWeight = -0.0172
+    breathingWeigh = 0.14498
+    value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
+  elif (pertinencesValuesHeart[pertinencesLabelsheart.index("bom")] > 0 and pertinencesValuesBreating[pertinencesLabelsBreating.index("bom")] > 0):
+    indexPreassure = pertinencesLabelsPressure.index("baixo")
+    indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
+    indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
+    preassureWeight = 5.1865
+    heartWeight = 2.837
+    breathingWeigh = -16.7698
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
   else:
     indexPreassure = pertinencesValuesPressure.index(min(pertinencesValuesPressure))
     indexHeart = pertinencesValuesHeart.index(min(pertinencesValuesHeart))
     indexBreating = pertinencesValuesBreating.index(min(pertinencesValuesBreating))
-    preassureWeight = 4.37
-    heartWeight = 1.329
-    breathingWeigh = -6.73
+    preassureWeight = 0.886
+    heartWeight = 0.4625
+    breathingWeigh = -2.387732
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
-  
+
   print(f"Linha {index} valor: {value}")
+
+qPA = file['qPA']
+pulso = file['pulso']
+resp = file['resp']
+grav = file['grav'] 
+count = 0
+for index, item in enumerate(pulso):
+  pertinencesValues, pertinencesLabels = GraphHeart.getPertinences(item)
+  if (True):
+    pertinencesValues, pertinencesLabels = GraphPressure.getPertinences(qPA[index])
+    print('---------------------------- Pressão:',qPA[index] )
+    count+=1
+    print(pertinencesValues)
+    print(pertinencesLabels)
+    print()
+    print('---------------------------- pulso:', pulso[index])
+    pertinencesValues, pertinencesLabels = GraphHeart.getPertinences(pulso[index])
+    print(pertinencesValues)
+    print(pertinencesLabels)
+    print()
+    print('---------------------------- resp:', resp[index])
+    pertinencesValues, pertinencesLabels = GraphBreating.getPertinences(resp[index])
+    print(pertinencesValues)
+    print(pertinencesLabels)
+    pertinencesValues, pertinencesLabels = GraphGravity.getPertinences(grav[index])
+    print('---------------------------- gravidade:',grav[index] )
+    print(pertinencesValues)
+    print(pertinencesLabels)
+    print()
+    print(grav[index])
+    print('##################################################################')
+  if (count == 3):
+    break
 
 
