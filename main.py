@@ -59,6 +59,7 @@ for index, row in file.iterrows():
   pertinencesValuesHeart, pertinencesLabelsheart = GraphHeart.getPertinences(heart)
   pertinencesValuesBreating, pertinencesLabelsBreating = GraphBreating.getPertinences(breathing)
   value = None
+  risk = None
 
   # print(pertinencesValuesPressure)
   # print(pertinencesLabelsPressure)
@@ -148,8 +149,28 @@ for index, row in file.iterrows():
     heartWeight = 0.4625
     breathingWeigh = -2.387732
     value = (preassure * pertinencesValuesPressure[indexPreassure] * preassureWeight) + ( heart * pertinencesValuesHeart[indexHeart] * heartWeight) + (breathing * pertinencesValuesBreating[indexBreating] * breathingWeigh)
-
-  print(f"Linha {index} valor: {value}")
+  
+  pertinencesValuesGravity, pertinencesLabelsGravity = GraphGravity.getPertinences(value)
+  if (pertinencesValuesGravity[pertinencesLabelsGravity.index("critico")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("instavel")] and  
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("critico")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("potencialmente_estavel")] and
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("critico")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("estavel")]):
+    risk = 1
+  elif (pertinencesValuesGravity[pertinencesLabelsGravity.index("instavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("critico")] and  
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("instavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("potencialmente_estavel")] and
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("instavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("estavel")]):
+    risk = 2
+  elif (pertinencesValuesGravity[pertinencesLabelsGravity.index("potencialmente_estavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("critico")] and  
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("potencialmente_estavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("instavel")] and
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("potencialmente_estavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("estavel")]):
+    risk = 3
+  elif (pertinencesValuesGravity[pertinencesLabelsGravity.index("estavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("critico")] and  
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("estavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("potencialmente_estavel")] and
+    pertinencesValuesGravity[pertinencesLabelsGravity.index("estavel")] > pertinencesValuesGravity[pertinencesLabelsGravity.index("instavel")]):
+    risk = 4
+  else: 
+    risk = 1
+  
+  print(f"Linha {index} valor: {value} risco: {risk}")
 
 qPA = file['qPA']
 pulso = file['pulso']
