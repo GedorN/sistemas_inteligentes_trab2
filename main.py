@@ -186,7 +186,7 @@ for index, row in file.iterrows():
     right += 1
 
 print(f"Acertos: {right}")
-print(f"Acuracia: {round((right/len(file)),5)}")
+print(f"Acuracia: {round((right/len(file)),3)}")
 
 med = sum/(len(file))
 rmse = math.sqrt(med)
