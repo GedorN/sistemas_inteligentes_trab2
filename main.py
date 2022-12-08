@@ -1,9 +1,13 @@
 import pandas as pd
 from GraphCurve import GraphCurve
 from Graph import Graph
+import math
+import sys
 
-file = pd.read_csv('./tar2_sinais_vitais_treino_com_label.txt')
+file = pd.read_csv('./tar2_sinais_vitais_teste_com_label.txt')
 file = file.reset_index() 
+
+f = open('result.txt', 'w')
 
 # Dados do gráfico fuzzy de qualidade de pressão
 beginsPressure = [-10, -5, -3, 0, 3, 5]
@@ -51,18 +55,22 @@ for i in range(0, len(beginsGravity)):
 
 # print(file)
 
+right = 0
+sum = 0
+dif = 0
+f.write('qPA,pulso,resp,grav,risco \n')
 for index, row in file.iterrows():
+  f.write(f"{row['qPA']},{row['pulso']},{row['resp']},")
   preassure = row['qPA']
   heart = row['pulso']
   breathing = row['resp']
+  risk_level = row['risco']
+  gravity = row['grav']
   pertinencesValuesPressure, pertinencesLabelsPressure = GraphPressure.getPertinences(preassure)
   pertinencesValuesHeart, pertinencesLabelsheart = GraphHeart.getPertinences(heart)
   pertinencesValuesBreating, pertinencesLabelsBreating = GraphBreating.getPertinences(breathing)
   value = None
   risk = None
-
-  # print(pertinencesValuesPressure)
-  # print(pertinencesLabelsPressure)
 
   # Ifs da contrução da lógica fuzzy
   if (pertinencesValuesPressure[pertinencesLabelsPressure.index("alto")] > 0):
@@ -169,40 +177,23 @@ for index, row in file.iterrows():
     risk = 4
   else: 
     risk = 1
-  
-  print(f"Linha {index} valor: {value} risco: {risk}")
+  f.write(f"{value},{risk} \n")
 
-qPA = file['qPA']
-pulso = file['pulso']
-resp = file['resp']
-grav = file['grav'] 
-count = 0
-for index, item in enumerate(pulso):
-  pertinencesValues, pertinencesLabels = GraphHeart.getPertinences(item)
-  if (True):
-    pertinencesValues, pertinencesLabels = GraphPressure.getPertinences(qPA[index])
-    print('---------------------------- Pressão:',qPA[index] )
-    count+=1
-    print(pertinencesValues)
-    print(pertinencesLabels)
-    print()
-    print('---------------------------- pulso:', pulso[index])
-    pertinencesValues, pertinencesLabels = GraphHeart.getPertinences(pulso[index])
-    print(pertinencesValues)
-    print(pertinencesLabels)
-    print()
-    print('---------------------------- resp:', resp[index])
-    pertinencesValues, pertinencesLabels = GraphBreating.getPertinences(resp[index])
-    print(pertinencesValues)
-    print(pertinencesLabels)
-    pertinencesValues, pertinencesLabels = GraphGravity.getPertinences(grav[index])
-    print('---------------------------- gravidade:',grav[index] )
-    print(pertinencesValues)
-    print(pertinencesLabels)
-    print()
-    print(grav[index])
-    print('##################################################################')
-  if (count == 3):
-    break
+  dif = (value - gravity) * (value - gravity)
+  sum += dif
+
+  if(risk_level == risk):
+    right += 1
+
+print(f"Acertos: {right}")
+print(f"Acuracia: {round((right/len(file)),5)}")
+
+med = sum/(len(file))
+rmse = math.sqrt(med)
+
+print(f"RMSE: {round(rmse,5)}")
+f.close()
+
+
 
 
